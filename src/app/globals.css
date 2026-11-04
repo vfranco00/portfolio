@@ -1,0 +1,220 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * Sistema visual — "Console noturno, virada para o papel".
+ * Base: o canvas quente do Warp (#121212, off-white #faf9f6, terminais).
+ * Virada: o flip preto→papel do Mural, com display leve e tracking apertado.
+ * Um único acento cromático (jade #00c27a) = "sistema saudável".
+ * Ouro e cobalto só aparecem dentro de código/terminal.
+ */
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-jade: #00c27a;
+  --color-mint: #b4f5c8;
+  --color-leaf: #d5f8e0;
+  --color-forest: #007b3b;
+  --color-gold: #bd9f65;
+  --color-cobalt: #6f839f;
+  --color-ember: #121212;
+  --color-onyx: #1e1e1d;
+  --color-smoke: #2f2f2f;
+  --color-iron: #383838;
+  --color-bone: #868684;
+  --color-stone: #b4b4b2;
+  --color-cream: #faf9f6;
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-inter-tight);
+  --font-mono: var(--font-jetbrains);
+  --font-heading: var(--font-inter-tight);
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+}
+
+/* Chão escuro (padrão do site) */
+:root {
+  --radius: 8px;
+  --background: #121212;
+  --foreground: #faf9f6;
+  --card: #1e1e1d;
+  --card-foreground: #faf9f6;
+  --popover: #1e1e1d;
+  --popover-foreground: #faf9f6;
+  --primary: #faf9f6;
+  --primary-foreground: #121212;
+  --secondary: #2f2f2f;
+  --secondary-foreground: #faf9f6;
+  --muted: #2f2f2f;
+  --muted-foreground: #a3a3a1;
+  --accent: #383838;
+  --accent-foreground: #faf9f6;
+  --destructive: #ff5f57;
+  --border: rgb(250 249 246 / 0.1);
+  --input: rgb(250 249 246 / 0.14);
+  --ring: #00c27a;
+  color-scheme: dark;
+}
+
+/* Mesma mão, chão oposto: seções em papel */
+.paper {
+  --background: #faf9f6;
+  --foreground: #0d0d0c;
+  --card: #ffffff;
+  --card-foreground: #0d0d0c;
+  --popover: #ffffff;
+  --popover-foreground: #0d0d0c;
+  --primary: #0d0d0c;
+  --primary-foreground: #faf9f6;
+  --secondary: #efeeea;
+  --secondary-foreground: #0d0d0c;
+  --muted: #efeeea;
+  --muted-foreground: #5f5f5c;
+  --accent: #e7e6e2;
+  --accent-foreground: #0d0d0c;
+  --border: rgb(13 13 12 / 0.1);
+  --input: rgb(13 13 12 / 0.16);
+  color-scheme: light;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: #00c27a;
+    color: #0d0d0c;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+}
+
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  @media (width >= 768px) {
+    padding-inline: 32px;
+  }
+}
+
+/* Grade de pontos do "console" — decorativa, só no chão escuro */
+@utility dot-grid {
+  background-image: radial-gradient(rgb(250 249 246 / 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes lane {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(400%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Revelação na rolagem (ver components/site/reveal-observer.tsx) */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.reveal-ready [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
